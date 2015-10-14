@@ -11,14 +11,20 @@ DbUpgradeManager.exe reset-views  -c "Data Source=.\;Initial Catalog=Advisory;In
 
 Tests setup:
 
-1. make Root xml element location="SQL\DataMigration"
-2. make 
-   <appSettings>
-    <add key="UDF" value="UDF.xml"/>
-  </appSettings>
-  in DbUpgradeManager.exe.config
+1. compile project Advisory.Migrator
+2. cp -r Advisory.Migrator/bin/Debug .
+1. make Root xml element location="..\..\SQL\DataMigration" in UDF.xml
 
 
-Test case 1: Restore from backup
+
+Test case 1: recount checksums for files: passed
+   reset-udf
+Z:\tickeron\tickeron-migrations\bin\Debug>DbUpgradeManager.exe reset-udf
+Advisory.Migrator.Implementation.MigrationTasks.CxResetUDFTask 2015-10-14 16:05:
+48,170 - UDF file was updated.
+
+Z:\tickeron\tickeron-migrations\bin\Debug>
+
+
 
 
