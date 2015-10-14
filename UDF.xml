@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" location="..\..\SQL\DataMigration" xmlns="http://tickeron.com/schemas/2015/migrations/udf">
+  <migrations>
+    <add type="Release">
+      <version>1</version>
+      <hotfixSequence xsi:nil="true" />
+      <backup>
+        <main primary="..\Backups\A8_Main.bak" />
+        <fact primary="..\Backups\A8_Facts.bak" />
+      </backup>
+      <checksum>4f89728319e1fe668a97de6cc6377a15</checksum>
+      <scripts>
+        <path value="release_v1_1.sql" checksum="eb29cc417a5124851b44dcccf6499959" />
+        <path value="release_v1_2.sql" checksum="d41d8cd98f00b204e9800998ecf8427e" />
+      </scripts>
+    </add>
+  </migrations>
+</Root>
