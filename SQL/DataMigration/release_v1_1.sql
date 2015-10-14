@@ -1,1 +1,4 @@
-insert into migrations (version, release) values (1, 1);
+USE Advisory;
+
+INSERT INTO dbo.migrations (version, release) VALUES (1, 1);
+

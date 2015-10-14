@@ -48,6 +48,8 @@ Duplicate two same scripts in different releases.
 
 ======= backup restoration mode test ===========
 
+Warning: works only with precreated empty database.
+
 Data:
 	Two releases with 2 versions: 1, 2. Each has primary and secondary different backup data.
 	One data migration in each release
@@ -86,14 +88,36 @@ DbUpgradeManager.exe restore -t primary -v 1 -f Advisory_fact -m Advisory -c "Da
 	,141 - Running script Z:\tickeron\tickeron-migrations\SQL\DataMigration\release_
 	v2_1.sql...                                                                         <---!
 
+	По факту у нас в view записалоось что прошло две миграции,а по факт упрошло три
+	select * from UpgradeLevel_VW;
+	Version	Hotfix	Checksum
+	1	0	0e161e38941434e0e24dd59e8a9aa65c
+	2	0	ddde0b225f20c8f530b2c04b1bcf806b
+
+	select * from migrations;
+	version	release	hotfix	
+	1	1	NULL	
+	1	2	NULL	
+	2	2	NULL	
+
+
+
+Почему restore mode прогоняет миграции в последнем релизе? Зачем нужен deploy mode тогда?
+Почему deploy mode прогоняет те же миграции в последнем релизе после restore mode?
+Почему deploy mode прогоняет одни и те же скрипты миграции в последнем релизе повторно при повторе команды? 
+Почему deply mode не определяет случай добавления скрипта в предыдущий релиз?
+
 
 ============ deploy mode =============
+
 
 
 Test case: respore secondary backup from last version. Failed. Version 2 migration ran.
 DbUpgradeManager.exe restore -t secondary -v 1 -f Advisory_fact -m Advisory -c "Data Source=.\;Integrated security=true"
 
 TODO: hotfix test cases
+
+
 
 
 

@@ -10,7 +10,7 @@
       </backup>
       <checksum>0e161e38941434e0e24dd59e8a9aa65c</checksum>
       <scripts>
-        <path value="release_v1_1.sql" checksum="0642f7fde5adc5e6e9464d9434c1887b" />
+        <path value="release_v1_1.sql" checksum="4481de7515100e42417a88ed67bb59bb" />
       </scripts>
     </add>
     <add type="Release">
@@ -20,10 +20,10 @@
         <main primary="C:\Backups\Advisory_primary_v2.bak" secondary="C:\Backups\Advisory_secondary_v2.bak" />
         <fact primary="C:\Backups\Advisory_fact_primary_v2.bak" secondary="C:\Backups\Advisory_fact_secondary_v2.bak" />
       </backup>
-      <checksum>95f58cc263bf577fa5c856f4b17fb3c5</checksum>
+      <checksum>ddde0b225f20c8f530b2c04b1bcf806b</checksum>
       <scripts>
-        <path value="release_v2_1.sql" checksum="b2736b7880509af0913b6f4f1bc88d5e" />
-        <path value="release_v2_2.sql" checksum="b2736b7880509af0913b6f4f1bc88d5e" />
+        <path value="release_v2_1.sql" checksum="2746f01b1afac999b3a3dc58cce84404" />
+        <path value="release_v2_2.sql" checksum="a075a798a2d95b875dc1b0a26f7ddace" />
       </scripts>
     </add>
   </migrations>
