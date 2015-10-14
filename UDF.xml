@@ -5,13 +5,25 @@
       <version>1</version>
       <hotfixSequence xsi:nil="true" />
       <backup>
-        <main primary="..\..\Backups\A8_Main.bak" />
-        <fact primary="..\..\Backups\A8_Facts.bak" />
+        <main primary="C:\Backups\Advisory_primary_v1.bak" secondary="C:\Backups\Advisory_secondary_v1.bak" />
+        <fact primary="C:\Backups\Advisory_fact_primary_v1.bak" secondary="C:\Backups\Advisory_fact_secondary_v1.bak" />
       </backup>
-      <checksum>8ef5b7d41e72110b252cbff3ac9d5084</checksum>
+      <checksum>0e161e38941434e0e24dd59e8a9aa65c</checksum>
       <scripts>
         <path value="release_v1_1.sql" checksum="0642f7fde5adc5e6e9464d9434c1887b" />
-        <path value="release_v1_2.sql" checksum="b2736b7880509af0913b6f4f1bc88d5e" />
+      </scripts>
+    </add>
+    <add type="Release">
+      <version>2</version>
+      <hotfixSequence xsi:nil="true" />
+      <backup>
+        <main primary="C:\Backups\Advisory_primary_v2.bak" secondary="C:\Backups\Advisory_secondary_v2.bak" />
+        <fact primary="C:\Backups\Advisory_fact_primary_v2.bak" secondary="C:\Backups\Advisory_fact_secondary_v2.bak" />
+      </backup>
+      <checksum>95f58cc263bf577fa5c856f4b17fb3c5</checksum>
+      <scripts>
+        <path value="release_v2_1.sql" checksum="b2736b7880509af0913b6f4f1bc88d5e" />
+        <path value="release_v2_2.sql" checksum="b2736b7880509af0913b6f4f1bc88d5e" />
       </scripts>
     </add>
   </migrations>

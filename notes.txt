@@ -13,18 +13,93 @@ Tests setup:
 
 1. compile project Advisory.Migrator
 2. cp -r Advisory.Migrator/bin/Debug .
-1. make Root xml element location="..\..\SQL\DataMigration" in UDF.xml
+3. make Root xml element location="..\..\SQL\DataMigration" in UDF.xml
+4. copy backups dir to C: drive. Do not know why MSSQL does not want to import from network disk(
+
+Test data base:
+drop table backup_info; pria
+drop table migrations;
+drop table name;
+
+drop table backup_info;
+drop table migrations;
+drop table name;
 
 
+========= udf validation tests =======
 
-Test case 1: recount checksums for files: passed
-   reset-udf
-Z:\tickeron\tickeron-migrations\bin\Debug>DbUpgradeManager.exe reset-udf
-Advisory.Migrator.Implementation.MigrationTasks.CxResetUDFTask 2015-10-14 16:05:
+Test case: recount checksums for files: passed
+	DbUpgradeManager.exe reset-udf
 48,170 - UDF file was updated.
 
-Z:\tickeron\tickeron-migrations\bin\Debug>
+Test case: recount checksums for files list: passed
+	DbUpgradeManager.exe reset-udf
+48,170 - UDF file was updated.
 
+
+======= Error tests =======
+
+Duplicate two same scripts in different releases.
+	Z:\tickeron\tickeron-migrations\bin\Debug>DbUpgradeManager.exe reset-udf
+	Advisory.Migrator.Program 2015-10-14 17:34:05,608 - Cross migration duplicate sc
+	ripts was founded, release_v1_1.sql, release_v1_2.sql.
+	Advisory.Migrator.Program 2015-10-14 17:34:05,623 - UDF is invalid.
+
+
+======= backup restoration mode test ===========
+
+Data:
+	Two releases with 2 versions: 1, 2. Each has primary and secondary different backup data.
+	One data migration in each release
+
+
+Test case: restore primary backup from 2nd version. Passed
+DbUpgradeManager.exe restore -t primary -f Advisory_fact -m Advisory -c "Data Source=.\;Integrated security=true"
+
+Test case: respore secondary backup from 2nd version. Passed
+DbUpgradeManager.exe restore -t secondary -f Advisory_fact -m Advisory -c "Data Source=.\;Integrated security=true"
+
+Test case: restore primary backup from 1st version. Failed. Release version 2 migration ran.
+DbUpgradeManager.exe restore -t primary -v 1 -f Advisory_fact -m Advisory -c "Data Source=.\;Integrated security=true"
+	Advisory.Migrator.Helper.CxVersionHelper 2015-10-14 19:05:24,907 - Successfully
+	find specified destination version 1.0.
+	Advisory.Migrator.Implementation.MigrationTasks.CxRestoreTask 2015-10-14 19:05:2
+	4,969 - Starting restore Advisory from version 1.0, backup C:\Backups\Advisory_p
+	rimary_v1.bak.
+	Advisory.Migrator.Implementation.MigrationTasks.CxRestoreTask 2015-10-14 19:05:2
+	5,532 - Restore "Advisory" completed successfully in 0.573s.
+	Advisory.Migrator.Implementation.MigrationTasks.CxRestoreTask 2015-10-14 19:05:2
+	5,547 - Starting restore Advisory_fact from version 1.0, backup C:\Backups\Advis
+	ory_fact_primary_v1.bak.
+	Advisory.Migrator.Implementation.MigrationTasks.CxRestoreTask 2015-10-14 19:05:2
+	6,016 - Restore "Advisory_fact" completed successfully in 0.477s.
+	Advisory.Migrator.Implementation.MigrationTasks.CxDeployBase 2015-10-14 19:05:26
+	,032 - Restoring migrations starting from version 1.0
+	Advisory.Migrator.Implementation.MigrationTasks.CxDeployBase 2015-10-14 19:05:26
+	,047 - Applying migration 1.0.
+	Advisory.Migrator.Implementation.MigrationTasks.CxDeployBase 2015-10-14 19:05:26
+	,047 - Running script Z:\tickeron\tickeron-migrations\SQL\DataMigration\release_
+	v1_1.sql...
+	Advisory.Migrator.Implementation.MigrationTasks.CxDeployBase 2015-10-14 19:05:26
+	,125 - Applying migration 2.0.                                                      <---!
+	Advisory.Migrator.Implementation.MigrationTasks.CxDeployBase 2015-10-14 19:05:26
+	,141 - Running script Z:\tickeron\tickeron-migrations\SQL\DataMigration\release_
+	v2_1.sql...                                                                         <---!
+
+
+============ deploy mode =============
+
+
+Test case: respore secondary backup from last version. Failed. Version 2 migration ran.
+DbUpgradeManager.exe restore -t secondary -v 1 -f Advisory_fact -m Advisory -c "Data Source=.\;Integrated security=true"
+
+TODO: hotfix test cases
+
+
+
+
+Z:\tickeron\tickeron-migrations\bin\Debug>DbUpgradeManager.exe restore -t primary -f Advisory_fact -m Advisory -v 1  -c "Data Source=.\;Integrated security=true
+Z:\tickeron\tickeron-migrations\bin\Debug>
 
 
 
