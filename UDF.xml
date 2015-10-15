@@ -19,16 +19,7 @@
       <backup />
       <checksum>318c172874a9ebbee3bc7c9f4950c34f</checksum>
       <scripts>
-        <path value="hotfix_v1_sec1.sql" checksum="67319057c2b7b425e0775178fd55eaef" />
-      </scripts>
-    </add>
-    <add type="Hotfix">
-      <version>1</version>
-      <hotfixSequence>2</hotfixSequence>
-      <backup />
-      <checksum>f91f1b455a71dca7a35d1b4a15989f70</checksum>
-      <scripts>
-        <path value="hotfix_v1_sec2.sql" checksum="6d0ec1137dc55780e4a54323a761b641" />
+        <path value="hotfix_v1_sec1.sql" checksum="165e6aa822555c402ec9bd1489c67815" />
       </scripts>
     </add>
     <add type="Release">
@@ -42,6 +33,24 @@
       <scripts>
         <path value="release_v2_1.sql" checksum="8bf0e8bb5ce9efd0c59ff7d3c02dd0b2" />
         <path value="release_v2_2.sql" checksum="3130ad600d52fe329f440c9d8b73ba46" />
+      </scripts>
+    </add>
+    <add type="Hotfix">
+      <version>2</version>
+      <hotfixSequence>1</hotfixSequence>
+      <backup />
+      <checksum>1920c1ce4fa30cbd5f0cdf79ddad6b88</checksum>
+      <scripts>
+        <path value="hotfix_v2_sec1.sql" checksum="5718e8fd08e40c4c412b249c62a0a00c" />
+      </scripts>
+    </add>
+    <add type="Hotfix">
+      <version>2</version>
+      <hotfixSequence>2</hotfixSequence>
+      <backup />
+      <checksum>7908d422ca156498c1a761805858a132</checksum>
+      <scripts>
+        <path value="hotfix_v2_sec2.sql" checksum="4c22d01c1ac4cb3643f423b01a6ef039" />
       </scripts>
     </add>
   </migrations>

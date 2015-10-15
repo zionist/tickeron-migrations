@@ -122,6 +122,12 @@ DbUpgradeManager.exe restore -t primary -v 1 -f Advisory_fact -m Advisory -c "Da
 Могут ли views UpgradeLevel_VW и UpgradeLevelDetail_VW  попасть в бэкап базы?
 Почему хотфиксы между релизами не накатываются?
 
+
+
+===== rest-udf ========
+
+Почему не определяется ситуация удаления например секции hotfix?
+
 ============ deploy mode =============
 
 

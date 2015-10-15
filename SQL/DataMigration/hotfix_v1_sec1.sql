@@ -1,4 +1,4 @@
 USE Advisory;
 
-INSERT INTO dbo.migrations (version, hotfix, script_count) VALUES (1, 1, 1);
+INSERT INTO dbo.migrations (hotfix_version, hotfix_sequence) VALUES (1, 1);
 
