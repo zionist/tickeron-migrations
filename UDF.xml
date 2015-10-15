@@ -10,7 +10,25 @@
       </backup>
       <checksum>0e161e38941434e0e24dd59e8a9aa65c</checksum>
       <scripts>
-        <path value="release_v1_1.sql" checksum="4481de7515100e42417a88ed67bb59bb" />
+        <path value="release_v1_1.sql" checksum="fd97a0f7ff491a773ace78678c7901be" />
+      </scripts>
+    </add>
+    <add type="Hotfix">
+      <version>1</version>
+      <hotfixSequence>1</hotfixSequence>
+      <backup />
+      <checksum>318c172874a9ebbee3bc7c9f4950c34f</checksum>
+      <scripts>
+        <path value="hotfix_v1_sec1.sql" checksum="67319057c2b7b425e0775178fd55eaef" />
+      </scripts>
+    </add>
+    <add type="Hotfix">
+      <version>1</version>
+      <hotfixSequence>2</hotfixSequence>
+      <backup />
+      <checksum>f91f1b455a71dca7a35d1b4a15989f70</checksum>
+      <scripts>
+        <path value="hotfix_v1_sec2.sql" checksum="6d0ec1137dc55780e4a54323a761b641" />
       </scripts>
     </add>
     <add type="Release">
@@ -22,8 +40,8 @@
       </backup>
       <checksum>ddde0b225f20c8f530b2c04b1bcf806b</checksum>
       <scripts>
-        <path value="release_v2_1.sql" checksum="2746f01b1afac999b3a3dc58cce84404" />
-        <path value="release_v2_2.sql" checksum="a075a798a2d95b875dc1b0a26f7ddace" />
+        <path value="release_v2_1.sql" checksum="8bf0e8bb5ce9efd0c59ff7d3c02dd0b2" />
+        <path value="release_v2_2.sql" checksum="3130ad600d52fe329f440c9d8b73ba46" />
       </scripts>
     </add>
   </migrations>

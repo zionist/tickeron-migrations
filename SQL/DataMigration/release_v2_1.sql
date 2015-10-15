@@ -1,3 +1,3 @@
 USE Advisory;
 
-INSERT INTO dbo.migrations (version, release) VALUES (1, 2);
+INSERT INTO dbo.migrations (release_version, script_count) VALUES (2, 1);

@@ -1,9 +1,9 @@
 https://docs.google.com/document/d/1EIbNOiZxhubIo_p_pA7ayYffR_TsxjFv4FB8lMKCuQ0/edit#
 
-Connection string Z:\tickeron\tickeron_main\Advisory.Migrator\bin\Debug>DbUpgradeManager.exe reset-views  -c "Data Source=.\;Initial Catalog=Advisory;Integrated security=true"
+DbUpgradeManager.exe reset-views  -c "Data Source=.\;Initial Catalog=Advisory;Integrated security=true"
 
 Test cases:
-DbUpgradeManager.exe reset-views  -c "Data Source=.\;Initial Catalog=Advisory;Integrated security=true"
+DbUpgradeManager.exe reset-views  -c "Data Source=.\;Integrated security=true"
 
 ../../UDF.xml захардкодено?
 
@@ -26,6 +26,8 @@ drop table migrations;
 drop table name;
 
 
+Он только высчечивает собощение что чек сумм
+Он только высчечивает собощение что чек сумм
 ========= udf validation tests =======
 
 Test case: recount checksums for files: passed
@@ -36,6 +38,9 @@ Test case: recount checksums for files list: passed
 	DbUpgradeManager.exe reset-udf
 48,170 - UDF file was updated.
 
+
+====== reset views ======
+Работает некорректно (не может сбросить чек суммы  в базе) если передать в connection string Initial Catalog=Advisory;
 
 ======= Error tests =======
 
@@ -48,6 +53,8 @@ Duplicate two same scripts in different releases.
 
 ======= backup restoration mode test ===========
 
+Восстанавливает релиз из самого последнего бэкапа. Не накатывает миграции последнего релиза.
+Он только высчечивает собощение что чек сумм
 Warning: works only with precreated empty database.
 
 Data:
@@ -62,6 +69,7 @@ Test case: respore secondary backup from 2nd version. Passed
 DbUpgradeManager.exe restore -t secondary -f Advisory_fact -m Advisory -c "Data Source=.\;Integrated security=true"
 
 Test case: restore primary backup from 1st version. Failed. Release version 2 migration ran.
+
 DbUpgradeManager.exe restore -t primary -v 1 -f Advisory_fact -m Advisory -c "Data Source=.\;Integrated security=true"
 	Advisory.Migrator.Helper.CxVersionHelper 2015-10-14 19:05:24,907 - Successfully
 	find specified destination version 1.0.
@@ -88,6 +96,8 @@ DbUpgradeManager.exe restore -t primary -v 1 -f Advisory_fact -m Advisory -c "Da
 	,141 - Running script Z:\tickeron\tickeron-migrations\SQL\DataMigration\release_
 	v2_1.sql...                                                                         <---!
 
+
+===========
 	По факту у нас в view записалоось что прошло две миграции,а по факт упрошло три
 	select * from UpgradeLevel_VW;
 	Version	Hotfix	Checksum
@@ -105,11 +115,14 @@ DbUpgradeManager.exe restore -t primary -v 1 -f Advisory_fact -m Advisory -c "Da
 Почему restore mode прогоняет миграции в последнем релизе? Зачем нужен deploy mode тогда?
 Почему deploy mode прогоняет те же миграции в последнем релизе после restore mode?
 Почему deploy mode прогоняет одни и те же скрипты миграции в последнем релизе повторно при повторе команды? 
-Почему deply mode не определяет случай добавления скрипта в предыдущий релиз?
+Почему deploy mode не определяет случай добавления скрипта в предыдущий релиз?
 
+Проговорить чем хотфиксы отличаются от релиза. Это тоже релиз?
+
+Могут ли views UpgradeLevel_VW и UpgradeLevelDetail_VW  попасть в бэкап базы?
+Почему хотфиксы между релизами не накатываются?
 
 ============ deploy mode =============
-
 
 
 Test case: respore secondary backup from last version. Failed. Version 2 migration ran.
@@ -118,12 +131,18 @@ DbUpgradeManager.exe restore -t secondary -v 1 -f Advisory_fact -m Advisory -c "
 TODO: hotfix test cases
 
 
-
-
-
-
 Z:\tickeron\tickeron-migrations\bin\Debug>DbUpgradeManager.exe restore -t primary -f Advisory_fact -m Advisory -v 1  -c "Data Source=.\;Integrated security=true
 Z:\tickeron\tickeron-migrations\bin\Debug>
 
 
+Накат по лесенке для restore. 
+Версию 
+
+deploy команду без параметров по дефолту ignore. погонять c warn.  ingore бесполезный.  
+
+Есть 1 релиз. Я его зарелизил ит начал второй спринт. На продакш сервере надо поправить. Там стоит релиз 1. У девелоперов версия 2.
+Мне нужна версия 1.5 . Хотфикс. Хотфиксы пока не накатываются. бэкап указан уже версии два то востанивится бэкап из версии и скрипты из версии 1.1 не применятся.  
+Бэкап в хотфиксе глупая идея.
+develop проверятет последовательность скриптов.
+develop прореряет кейс что до моего скрипта вставился скрипт.
 
