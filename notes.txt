@@ -27,7 +27,6 @@ drop table name;
 
 
 Он только высчечивает собощение что чек сумм
-Он только высчечивает собощение что чек сумм
 ========= udf validation tests =======
 
 Test case: recount checksums for files: passed
@@ -37,6 +36,8 @@ Test case: recount checksums for files: passed
 Test case: recount checksums for files list: passed
 	DbUpgradeManager.exe reset-udf
 48,170 - UDF file was updated.
+
+утилита для udf не хэндлит добавление \ измненеия секции. Например хотфикса
 
 
 ====== reset views ======
@@ -57,15 +58,20 @@ Duplicate two same scripts in different releases.
 Он только высчечивает собощение что чек сумм
 Warning: works only with precreated empty database.
 
+
+
+
 Data:
 	Two releases with 2 versions: 1, 2. Each has primary and secondary different backup data.
 	One data migration in each release
 
 
-Test case: restore primary backup from 2nd version. Passed
+Test case: restore primary backup from 2nd version. Failed
+Should not run current release migrations
 DbUpgradeManager.exe restore -t primary -f Advisory_fact -m Advisory -c "Data Source=.\;Integrated security=true"
 
-Test case: respore secondary backup from 2nd version. Passed
+Test case: respore secondary backup from 2nd version. Failed
+Should not tun current release migrations
 DbUpgradeManager.exe restore -t secondary -f Advisory_fact -m Advisory -c "Data Source=.\;Integrated security=true"
 
 Test case: restore primary backup from 1st version. Failed. Release version 2 migration ran.
@@ -97,18 +103,11 @@ DbUpgradeManager.exe restore -t primary -v 1 -f Advisory_fact -m Advisory -c "Da
 	v2_1.sql...                                                                         <---!
 
 
-===========
-	По факту у нас в view записалоось что прошло две миграции,а по факт упрошло три
-	select * from UpgradeLevel_VW;
-	Version	Hotfix	Checksum
-	1	0	0e161e38941434e0e24dd59e8a9aa65c
-	2	0	ddde0b225f20c8f530b2c04b1bcf806b
+Test case: restore primary backup release version 1  with hotfixies: failed
 
-	select * from migrations;
-	version	release	hotfix	
-	1	1	NULL	
-	1	2	NULL	
-	2	2	NULL	
+Test case: test -h option for last release. Failed. -h option has no effect.
+
+Test case: restore backup with all migration scripts from version 1. If no version 2 backup present. Passed
 
 
 
@@ -122,7 +121,7 @@ DbUpgradeManager.exe restore -t primary -v 1 -f Advisory_fact -m Advisory -c "Da
 Могут ли views UpgradeLevel_VW и UpgradeLevelDetail_VW  попасть в бэкап базы?
 Почему хотфиксы между релизами не накатываются?
 
-
+Зачем  нужен -h и -v параметры в deploy и develop mode?
 
 ===== rest-udf ========
 
@@ -133,6 +132,7 @@ DbUpgradeManager.exe restore -t primary -v 1 -f Advisory_fact -m Advisory -c "Da
 
 Test case: respore secondary backup from last version. Failed. Version 2 migration ran.
 DbUpgradeManager.exe restore -t secondary -v 1 -f Advisory_fact -m Advisory -c "Data Source=.\;Integrated security=true"
+
 
 TODO: hotfix test cases
 
@@ -151,4 +151,13 @@ deploy команду без параметров по дефолту ignore. п
 Бэкап в хотфиксе глупая идея.
 develop проверятет последовательность скриптов.
 develop прореряет кейс что до моего скрипта вставился скрипт.
+
+
+Хотфиксы относятся к релизу.
+
+
+====== Как должно быть =======
+
+restore mode не запускает скрипты в текущей миграции в секции release, т.к. это уже будет версия 2.2 например.
+restore mode запускает hostfixes для текущей миграции, т.к это часть релиза.
 
