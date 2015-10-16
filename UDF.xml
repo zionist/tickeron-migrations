@@ -38,7 +38,10 @@
     <add type="Hotfix">
       <version>2</version>
       <hotfixSequence>1</hotfixSequence>
-      <backup />
+      <backup>
+        <main primary="C:\Backups\Advisory_hotfix_primary_v2_sec1.bak" />
+        <fact primary="C:\Backups\Advisory_fact_hotfix_primary_v2_sec1.bak" />
+      </backup>
       <checksum>1920c1ce4fa30cbd5f0cdf79ddad6b88</checksum>
       <scripts>
         <path value="hotfix_v2_sec1.sql" checksum="5718e8fd08e40c4c412b249c62a0a00c" />
@@ -53,5 +56,19 @@
         <path value="hotfix_v2_sec2.sql" checksum="4c22d01c1ac4cb3643f423b01a6ef039" />
       </scripts>
     </add>
+
+    <add type="Release">
+      <version>3</version>
+      <hotfixSequence xsi:nil="true" />
+      <backup>
+        <main primary="C:\Backups\Advisory_primary_v3.bak" />
+        <fact primary="C:\Backups\Advisory_fact_primary_v3.bak" />
+      </backup>
+      <checksum>93a9f3ed57e62649e29406c6394e9792</checksum>
+      <scripts>
+        <path value="release_v3_1.sql" checksum="af638928378d4cd103ac9b8bfeea60c3" />
+      </scripts>
+    </add>
+
   </migrations>
 </Root>

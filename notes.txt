@@ -5,9 +5,6 @@ DbUpgradeManager.exe reset-views  -c "Data Source=.\;Initial Catalog=Advisory;In
 Test cases:
 DbUpgradeManager.exe reset-views  -c "Data Source=.\;Integrated security=true"
 
-../../UDF.xml захардкодено?
-
-
 
 Tests setup:
 
@@ -16,28 +13,29 @@ Tests setup:
 3. make Root xml element location="..\..\SQL\DataMigration" in UDF.xml
 4. copy backups dir to C: drive. Do not know why MSSQL does not want to import from network disk(
 
-Test data base:
-drop table backup_info; pria
-drop table migrations;
-drop table name;
 
-drop table backup_info;
-drop table migrations;
-drop table name;
+========= reset udf =======
 
 
-Он только высчечивает собощение что чек сумм
-========= udf validation tests =======
+Test case: test check migrations number sequence. failed
+https://tickeron.atlassian.net/browse/TMA-788
 
 Test case: recount checksums for files: passed
-	DbUpgradeManager.exe reset-udf
+    DbUpgradeManager.exe reset-udf
 48,170 - UDF file was updated.
 
 Test case: recount checksums for files list: passed
-	DbUpgradeManager.exe reset-udf
+    DbUpgradeManager.exe reset-udf
 48,170 - UDF file was updated.
 
+Test case:  passed
+    Making sure Release migration elements have null hotfix sequence field. 
+    Making sure Hotfix migration element have not null hotfix sequence field
+
+
+
 утилита для udf не хэндлит добавление \ измненеия секции. Например хотфикса
+Почему не определяется ситуация удаления например секции hotfix?
 
 
 ====== reset views ======
@@ -46,29 +44,36 @@ Test case: recount checksums for files list: passed
 ======= Error tests =======
 
 Duplicate two same scripts in different releases.
-	Z:\tickeron\tickeron-migrations\bin\Debug>DbUpgradeManager.exe reset-udf
-	Advisory.Migrator.Program 2015-10-14 17:34:05,608 - Cross migration duplicate sc
-	ripts was founded, release_v1_1.sql, release_v1_2.sql.
-	Advisory.Migrator.Program 2015-10-14 17:34:05,623 - UDF is invalid.
+    Z:\tickeron\tickeron-migrations\bin\Debug>DbUpgradeManager.exe reset-udf
+    Advisory.Migrator.Program 2015-10-14 17:34:05,608 - Cross migration duplicate sc
+    ripts was founded, release_v1_1.sql, release_v1_2.sql.
+    Advisory.Migrator.Program 2015-10-14 17:34:05,623 - UDF is invalid.
 
 
-======= backup restoration mode test ===========
+======= restore mode =========
 
 Восстанавливает релиз из самого последнего бэкапа. Не накатывает миграции последнего релиза.
 Он только высчечивает собощение что чек сумм
 Warning: works only with precreated empty database.
 
 
+Test data (see UDF.xml):
+    3 release migrations.
+    1 hotfix for 1-st release.
+    2 hotfixies for 2-nd release.
+    2 hotfixies for 3-d release.
+    primary and secondary backups for 1-st and 2-nd releases
+    primary backup for 3-d release
+    primary backup for 2-nd migrations hotfix sec 1
 
 
-Data:
-	Two releases with 2 versions: 1, 2. Each has primary and secondary different backup data.
-	One data migration in each release
+Test case: restore primary backup for 1st migration version from 1-st version backup. pass
+DbUpgradeManager.exe restore -v 1 -t primary -f Advisory_fact -m Advisory -c "Data Source=.\;Integrated security=true"
 
+Test case: restore primary backup for 2nd migration version from 1-st version backup with all hotfixies. failed
+DbUpgradeManager.exe restore -v 1 -t primary -f Advisory_fact -m Advisory -c "Data Source=.\;Integrated security=true"
 
-Test case: restore primary backup from 2nd version. Failed
-Should not run current release migrations
-DbUpgradeManager.exe restore -t primary -f Advisory_fact -m Advisory -c "Data Source=.\;Integrated security=true"
+Test case: restore hotfix from hotfix backup.
 
 Test case: respore secondary backup from 2nd version. Failed
 Should not tun current release migrations
@@ -77,30 +82,30 @@ DbUpgradeManager.exe restore -t secondary -f Advisory_fact -m Advisory -c "Data 
 Test case: restore primary backup from 1st version. Failed. Release version 2 migration ran.
 
 DbUpgradeManager.exe restore -t primary -v 1 -f Advisory_fact -m Advisory -c "Data Source=.\;Integrated security=true"
-	Advisory.Migrator.Helper.CxVersionHelper 2015-10-14 19:05:24,907 - Successfully
-	find specified destination version 1.0.
-	Advisory.Migrator.Implementation.MigrationTasks.CxRestoreTask 2015-10-14 19:05:2
-	4,969 - Starting restore Advisory from version 1.0, backup C:\Backups\Advisory_p
-	rimary_v1.bak.
-	Advisory.Migrator.Implementation.MigrationTasks.CxRestoreTask 2015-10-14 19:05:2
-	5,532 - Restore "Advisory" completed successfully in 0.573s.
-	Advisory.Migrator.Implementation.MigrationTasks.CxRestoreTask 2015-10-14 19:05:2
-	5,547 - Starting restore Advisory_fact from version 1.0, backup C:\Backups\Advis
-	ory_fact_primary_v1.bak.
-	Advisory.Migrator.Implementation.MigrationTasks.CxRestoreTask 2015-10-14 19:05:2
-	6,016 - Restore "Advisory_fact" completed successfully in 0.477s.
-	Advisory.Migrator.Implementation.MigrationTasks.CxDeployBase 2015-10-14 19:05:26
-	,032 - Restoring migrations starting from version 1.0
-	Advisory.Migrator.Implementation.MigrationTasks.CxDeployBase 2015-10-14 19:05:26
-	,047 - Applying migration 1.0.
-	Advisory.Migrator.Implementation.MigrationTasks.CxDeployBase 2015-10-14 19:05:26
-	,047 - Running script Z:\tickeron\tickeron-migrations\SQL\DataMigration\release_
-	v1_1.sql...
-	Advisory.Migrator.Implementation.MigrationTasks.CxDeployBase 2015-10-14 19:05:26
-	,125 - Applying migration 2.0.                                                      <---!
-	Advisory.Migrator.Implementation.MigrationTasks.CxDeployBase 2015-10-14 19:05:26
-	,141 - Running script Z:\tickeron\tickeron-migrations\SQL\DataMigration\release_
-	v2_1.sql...                                                                         <---!
+    Advisory.Migrator.Helper.CxVersionHelper 2015-10-14 19:05:24,907 - Successfully
+    find specified destination version 1.0.
+    Advisory.Migrator.Implementation.MigrationTasks.CxRestoreTask 2015-10-14 19:05:2
+    4,969 - Starting restore Advisory from version 1.0, backup C:\Backups\Advisory_p
+    rimary_v1.bak.
+    Advisory.Migrator.Implementation.MigrationTasks.CxRestoreTask 2015-10-14 19:05:2
+    5,532 - Restore "Advisory" completed successfully in 0.573s.
+    Advisory.Migrator.Implementation.MigrationTasks.CxRestoreTask 2015-10-14 19:05:2
+    5,547 - Starting restore Advisory_fact from version 1.0, backup C:\Backups\Advis
+    ory_fact_primary_v1.bak.
+    Advisory.Migrator.Implementation.MigrationTasks.CxRestoreTask 2015-10-14 19:05:2
+    6,016 - Restore "Advisory_fact" completed successfully in 0.477s.
+    Advisory.Migrator.Implementation.MigrationTasks.CxDeployBase 2015-10-14 19:05:26
+    ,032 - Restoring migrations starting from version 1.0
+    Advisory.Migrator.Implementation.MigrationTasks.CxDeployBase 2015-10-14 19:05:26
+    ,047 - Applying migration 1.0.
+    Advisory.Migrator.Implementation.MigrationTasks.CxDeployBase 2015-10-14 19:05:26
+    ,047 - Running script Z:\tickeron\tickeron-migrations\SQL\DataMigration\release_
+    v1_1.sql...
+    Advisory.Migrator.Implementation.MigrationTasks.CxDeployBase 2015-10-14 19:05:26
+    ,125 - Applying migration 2.0.                                                      <---!
+    Advisory.Migrator.Implementation.MigrationTasks.CxDeployBase 2015-10-14 19:05:26
+    ,141 - Running script Z:\tickeron\tickeron-migrations\SQL\DataMigration\release_
+    v2_1.sql...                                                                         <---!
 
 
 Test case: restore primary backup release version 1  with hotfixies: failed
@@ -122,10 +127,10 @@ Test case: restore backup with all migration scripts from version 1. If no versi
 Почему хотфиксы между релизами не накатываются?
 
 Зачем  нужен -h и -v параметры в deploy и develop mode?
+Проговорить о том какая миграция к какой относится.
 
-===== rest-udf ========
+Спросить должна ли миграция на хот фикс 2.1 накатывать скрипты которые находятся в миграции 2
 
-Почему не определяется ситуация удаления например секции hotfix?
 
 ============ deploy mode =============
 
@@ -159,5 +164,11 @@ develop прореряет кейс что до моего скрипта вст
 ====== Как должно быть =======
 
 restore mode не запускает скрипты в текущей миграции в секции release, т.к. это уже будет версия 2.2 например.
-restore mode запускает hostfixes для текущей миграции, т.к это часть релиза.
 
+
+DbUpgradeManager.exe reset-udf
+Advisory.Migrator.Program 2015-10-16 12:08:29,597 - Version sequence is invalid,
+ expected 3, actual 1, hotfix 2.
+Advisory.Migrator.Program 2015-10-16 12:08:29,612 - UDF is invalid.
+
+E:\tickeron\tickeron-migrations\bin\Debug>
